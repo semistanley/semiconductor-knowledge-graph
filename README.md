@@ -33,6 +33,8 @@ An open, community-driven knowledge base for semiconductor materials & processes
 
 👉 Feel free to open an Issue or submit a Pull Request.
 
+Disclaimer: All data is for learning reference only and not for use in actual process production.
+
 ---
 
 ## 🚀 Quick Start (Local)
@@ -115,6 +117,7 @@ docker-compose up
 
 👉 欢迎提出 Issue 或直接提交 Pull Request！
 
+免责声明：所有数据仅供学习参考，不用于实际工艺生产。
 ---
 
 ## 🚀 快速开始（本地运行）
