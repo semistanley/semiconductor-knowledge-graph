@@ -1,2 +1,6 @@
 .worktrees/
 worktrees/
+platform/.next/
+platform/dist/
+platform/node_modules/
+platform/.env*
