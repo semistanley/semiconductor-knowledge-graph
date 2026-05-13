@@ -1,0 +1,128 @@
+# 贡献指南 – 半导体工艺知识图谱（Semiconductor-Knowledge-Graph）
+
+首先，感谢你考虑为这个**开放式协作、知识有偿化**的平台贡献力量！  
+你的每一次贡献，都会让半导体工艺知识更加完善，并有机会得到经济回报。
+
+---
+
+## 一、核心理念
+
+我们不是传统的“白嫖式开源”。  
+**你贡献的知识节点，如果被未来的付费解决方案引用，你将自动获得相应比例的收益分成。**  
+你可以选择**匿名贡献**（保护你的关键认知不被追踪），也可以公开展示你的专业能力。  
+你的数据可以**自由衍生成分支**，并自动与相关节点关联。  
+**你的知识，可以安全地变现。**
+
+---
+
+## 二、你可以贡献哪些内容？
+
+| 贡献类型 | 描述 | 回报 |
+|----------|------|------|
+| 🧩 **工艺节点数据** | 添加一个新的工艺步骤（如CVD、PVD、刻蚀参数、材料参数、设备型号、封装工艺）或完善已有节点参数、版权分支。 | 基础积分+引用分成 |
+| 🔗 **节点关系** | 在两个已有节点之间创建关联（上游/下游/替代/增强），并说明关系权重。 | 关系贡献积分 |
+| 🔍 **数据验证** | 对照论文或官方手册验证已有节点参数的准确性。 | 验证积分+权威值提升 |
+| 💻 **代码/工具** | 改进图谱引擎、API、前端可视化、CI/CD、自动化关联脚本等。 | 代码贡献积分 |
+| 📚 **文档/教程** | 完善 README、Wiki、API文档、贡献指南、案例教程。 | 社区贡献积分 |
+| 🌍 **翻译** | 将文档或节点描述翻译为英文或其他语言。 | 翻译积分 |
+| 💡 **付费解决方案** | 当付费用户提出具体工艺问题时，平台根据权威值匹配小组，你作为专家参与解决。 | 高额报酬 |
+
+---
+
+## 三、如何贡献（Step by Step）
+
+### 3.1 数据贡献（最核心）
+
+1. **Fork** 本仓库到你的 GitHub 账号。
+2. 创建新分支：`git checkout -b data/add-heat-treat-node`
+3. 在 `data/contributions/` 目录下创建一个新的 JSON 文件（建议一个好记的文件名，如 `heat-treatment-N2-atmosphere.json`）
+4. 按照以下模板填入你的节点信息：
+
+```json
+{
+  "id": "node-heat-treatment-N2-001",
+  "type": "Annealing",
+  "name": "快速热退火 (RTA) – N2 气氛",
+  "description": "在氮气氛围中进行快速热退火，用于激活掺杂原子...",
+  "parameters": {
+    "temperature": { "value": 1000, "unit": "°C", "range": [950, 1050] },
+    "time": { "value": 30, "unit": "s", "range": [10, 60] },
+    "gas_flow_N2": { "value": 5, "unit": "slm" }
+  },
+  "supplier": "Applied Materials",
+  "equipment_model": "Vantage RTP",
+  "contributor": {
+    "github_id": "your_github_username_or_anonymous_hash",
+    "anonymous": false,
+    "public_name": "optional_display_name"
+  },
+  "parent_id": null,
+  "parent_relation": "variant_of",
+  "tags": ["deposition", "anneal", "dopant activation", "RTA"]
+}
+
+5. 如果你希望贡献匿名：将 contributor.anonymous 设置为 true，并用任意字符串代替 GitHub ID（如 anon-3a9f2b），系统只记录匿名荣誉积分，无法追溯到你。
+提交并推送你的分支，然后发起 Pull Request。
+6. 注意：请不要提交包含企业机密的真实参数。所有数据应来自公开文献、手册或你的独立实验（需已发布）。我们会在数据验证时检查来源。
+
+### 3.2 添加节点关系
+在 data/contributions/ 下创建关系 JSON 文件，例如 rel-between-001-and-002.json：
+{
+  "source_id": "node-heat-treatment-N2-001",
+  "target_id": "node-etch-Si3N4-002",
+  "type": "downstream",
+  "description": "RTA 退火后，Si3N4 硬掩膜层结构发生变化，影响后续刻蚀速率",
+  "weight": 0.8,
+  "creator": {
+    "github_id": "your_github_id_or_anon",
+    "anonymous": false
+  }
+}
+
+### 3.3 代码/文档/翻译贡献
+请发起常规 PR，并确保你的代码风格符合项目规范（见 .editorconfig 和 eslint 配置）。
+文档修改直接在对应 .md 文件中进行。
+
+## 四、如何获得经济回报？
+当平台收到一个付费定量解决方案请求（例如“我需要优化 TSV 刻蚀参数”）时，系统会自动：
+
+分析该问题涉及的所有工艺节点。
+计算每个节点在方案中的引用权重（与问题相关度、节点权威值、历史引用次数）。
+将 70% 的付费金额 按权重分配给所有被引用节点的贡献者（匿名/公开均有份）。
+其余 30% 用于平台运营和专家执行小组的报酬（你如果被选入小组，另有额外报酬）。
+所以，你贡献的节点越关键、越高频地被引用，你获得的被动收入就越多。
+这个分成算法完全开源、透明（在 docs/revenue-distribution.md 中详述）。
+
+## 五、隐私与知识产权保护
+你的需求	                  我们的处理
+匿名贡献	                  在贡献JSON中将 anonymous: true，系统只记录匿名ID，不绑定真实身份。积分以匿名ID计量。付费分成可匿名发放（如加密货币或礼品卡）。
+不想被追踪推导	            分支节点可以设置 private: true，只暴露部分参数，不暴露原始数据。
+担心知识产权	              我们要求所有贡献者签署 CLA（贡献者许可协议），声明你拥有该数据的合法权利，并授予项目开源使用的许可证（见 CLA.md）。但这不影响你的匿名权。
+我们坚决反对“白嫖”行为。任何试图绕过贡献者直接使用数据的行为，将面临社区谴责和法律责任。
+
+## 六、社区行为准则
+尊重他人，文明交流。
+禁止提交虚假或恶意数据。
+对于数据误差，请友好指出，而不是攻击。
+所有争议通过仲裁委员会（由高权威值贡献者组成）解决。
+详见 CODE_OF_CONDUCT.md。
+
+## 七、快速启动
+# 1. fork 并 clone
+git clone https://github.com/你的用户名/semiconductor-knowledge-graph.git
+cd semiconductor-knowledge-graph
+
+# 2. 安装依赖（如果涉及前端/后端开发）
+docker-compose up
+
+# 3. 查看现有数据
+python scripts/visualize.py
+
+# 4. 开始你的第一次贡献！
+
+
+我们期待你的加入。
+你的每一次节点添加，都是半导体工艺知识图谱的一块基石，也是你未来收入的一笔投资。
+
+如有疑问，请通过 Issues 或 Discussions 发起讨论。
+项目总监团队将在一周内回复。
