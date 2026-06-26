@@ -45,16 +45,23 @@ app = Flask(
     static_folder=os.path.join(os.path.dirname(__file__), "static"),
 )
 app.config["SECRET_KEY"] = settings.FLASK_SECRET_KEY
+app.config["SESSION_COOKIE_SECURE"] = False
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 init_db(app)
 
+import threading
 _qa_system = None
+_qa_lock = threading.Lock()
 
 
 def get_qa_system():
     global _qa_system
     if _qa_system is None:
-        from semiconductor_kg_qa import 半导体知识图谱系统
-        _qa_system = 半导体知识图谱系统()
+        with _qa_lock:
+            if _qa_system is None:
+                from semiconductor_kg_qa import 半导体知识图谱系统
+                _qa_system = 半导体知识图谱系统()
     return _qa_system
 
 

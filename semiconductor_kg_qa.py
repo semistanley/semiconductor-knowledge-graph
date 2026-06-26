@@ -149,10 +149,10 @@ class 半导体知识图谱系统:
         self.cache[cache_key] = cypher_query
         return cypher_query
 
-    def 执行_cypher查询(self, cypher_query: str) -> QueryResult:
+    def 执行_cypher查询(self, cypher_query: str, params: dict | None = None) -> QueryResult:
         开始 = time.time()
         with self.driver.session() as session:
-            结果 = session.run(cypher_query)
+            结果 = session.run(cypher_query, parameters=params or {})
             records = [dict(record) for record in 结果]
         return QueryResult(cypher_query=cypher_query, result=records, execution_time=time.time() - 开始)
 
@@ -269,20 +269,22 @@ class 半导体知识图谱系统:
 
     def 处理问题(self, 问题: str) -> Dict:
         normalized_question = normalize_query(问题)
+        query_params = {}
 
         try:
             cypher_query = self.自然语言转_cypher(normalized_question)
         except Exception:
-            kw = normalized_question.strip().replace("'", "\\'")
+            kw = normalized_question.strip()[:80]
+            query_params = {"kw": kw}
             cypher_query = (
                 "MATCH (n) "
-                f"WHERE toLower(n.name) CONTAINS toLower('{kw}') "
-                f"OR toLower(n.description) CONTAINS toLower('{kw}') "
+                "WHERE toLower(n.name) CONTAINS toLower($kw) "
+                "OR toLower(n.description) CONTAINS toLower($kw) "
                 "RETURN n.id AS id, n.name AS name, labels(n) AS type, n.description AS description LIMIT 20"
             )
 
         try:
-            main_res = self.执行_cypher查询(cypher_query)
+            main_res = self.执行_cypher查询(cypher_query, query_params)
         except Exception as exc:
             ans = self.直接用大模型回答(normalized_question)
             return {
@@ -366,7 +368,7 @@ class 半导体知识图谱系统:
             UNWIND $kws AS kw
             MATCH (n)
             WHERE toLower(n.name) CONTAINS toLower(kw)
-            WITH n LIMIT 5
+            WITH n LIMIT 3
 
             OPTIONAL MATCH (n)-[r1]-(m1)
             WHERE type(r1) IN [

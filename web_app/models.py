@@ -20,13 +20,13 @@ class User(db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=_utcnow)
 
-    chat_messages = db.relationship("ChatMessage", backref="user", lazy="dynamic")
-    documents = db.relationship("DocumentRecord", backref="user", lazy="dynamic")
-    archives = db.relationship("ArchiveEntry", backref="user", lazy="dynamic")
-    graph_updates = db.relationship("GraphUpdateLog", backref="user", lazy="dynamic")
-    credits = db.relationship("UserCredit", backref="user", uselist=False, lazy="joined")
-    contributions = db.relationship("Contribution", backref="user", lazy="dynamic")
-    verifications = db.relationship("Verification", backref="user", lazy="dynamic")
+    chat_messages = db.relationship("ChatMessage", backref="user", lazy="dynamic", cascade="all, delete-orphan")
+    documents = db.relationship("DocumentRecord", backref="user", lazy="dynamic", cascade="all, delete-orphan")
+    archives = db.relationship("ArchiveEntry", backref="user", lazy="dynamic", cascade="all, delete-orphan")
+    graph_updates = db.relationship("GraphUpdateLog", backref="user", lazy="dynamic", cascade="all, delete-orphan")
+    credits = db.relationship("UserCredit", backref="user", uselist=False, lazy="joined", cascade="all, delete-orphan")
+    contributions = db.relationship("Contribution", backref="user", lazy="dynamic", cascade="all, delete-orphan")
+    verifications = db.relationship("Verification", backref="user", lazy="dynamic", cascade="all, delete-orphan")
 
     def set_password(self, password: str) -> None:
         self.password_hash = generate_password_hash(password)

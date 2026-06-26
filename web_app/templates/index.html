@@ -1,65 +1,32 @@
-<!doctype html>
-<html lang="zh">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>半导体知识图谱智能问答（GraphRAG）</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
+{% extends "base.html" %}
+{% block title %}AI Chat - Semiconductor KG{% endblock %}
+{% block header_title %}AI Chat + Knowledge Graph{% endblock %}
+{% block head_extra %}
   <script src="/static/js/echarts.min.js"></script>
-</head>
-<body>
-  <div class="app">
-    <div class="header">
-      <div class="title">半导体知识图谱智能问答（左聊天 / 右推理图谱）</div>
-            <div class="nav">
-        <a href="/app">Chat</a>
-        <a href="/evolution">Evolution</a>
-        <a href="/simulate">Simulator</a>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/signals">Signals</a>
-        <a href="/leaderboard">Leaderboard</a>
-        <a href="/profile">Profile</a>
-        <a href="/news">News</a>
-        <span id="user-info" class="user-info"></span>
-        <button id="logout-btn" class="btn small-btn">Exit</button>
-      </div>
-    </div>
-
+{% endblock %}
+{% block content %}
     <div class="main">
-      <!-- 左侧：聊天区 -->
       <div class="left">
-        <div class="panel-title">对话</div>
+        <div class="panel-title">Chat</div>
         <div id="chat" class="chat"></div>
-
         <div class="input-row">
-          <textarea id="q" class="input" placeholder="例如：客户要沉积TiN，推荐什么设备？工艺路线怎么设计？"></textarea>
-          <button id="send" class="btn">发送</button>
+          <textarea id="q" class="input" placeholder="e.g.: TiN deposition equipment recommendation?"></textarea>
+          <button id="send" class="btn">Send</button>
         </div>
-
-        <!-- 可拖拽分割条：调整对话区与三元组区高度 -->
-        <div id="left-resizer" class="resizer" title="按住拖动可调整三元组区域高度"></div>
-
-        <div class="panel-title">三元组抽取（勾选后可入库）</div>
+        <div id="left-resizer" class="resizer" title="Drag to resize triple area"></div>
+        <div class="panel-title">Triple Extraction (check to ingest)</div>
         <div id="trace" class="trace"></div>
-
       </div>
-
-      <!-- 右侧：图谱可视化 -->
       <div class="right">
-        <div class="panel-title">知识图谱可视化（单击节点展开并查看详情）</div>
+        <div class="panel-title">Knowledge Graph (click node to expand)</div>
         <div id="graph" class="graph"></div>
-
-        <!-- 可拖拽分割条：调整图谱与节点详情高度 -->
-        <div id="right-resizer" class="resizer" title="按住拖动可调整节点详情区域高度"></div>
-
-        <div class="panel-title">节点详情</div>
-        <div id="detail-panel" class="trace detail-panel">点击图谱中的节点或关系查看详细信息...</div>
+        <div id="right-resizer" class="resizer" title="Drag to resize detail area"></div>
+        <div class="panel-title">Node Details</div>
+        <div id="detail-panel" class="trace detail-panel">Click a node or edge for details...</div>
       </div>
     </div>
-  </div>
-
-  <script src="/static/js/auth.js"></script>
+{% endblock %}
+{% block scripts %}
   <script src="/static/js/app.js"></script>
   <script src="/static/js/resizer.js"></script>
-</body>
-</html>
+{% endblock %}

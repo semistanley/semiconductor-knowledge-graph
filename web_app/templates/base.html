@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Semiconductor KG Platform{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">{% block header_title %}Semiconductor KG{% endblock %}</div>
+      {% if user %}
+      <div class="nav">
+        <a href="/app">Chat</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/news">News</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+      </div>
+      {% else %}
+      <div class="nav">
+        <a href="/">Home</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/news">News</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      </div>
+      {% endif %}
+    </div>
+
+    {% block content %}{% endblock %}
+  </div>
+
+  {% if user %}
+  <script src="/static/js/auth.js"></script>
+  {% endif %}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

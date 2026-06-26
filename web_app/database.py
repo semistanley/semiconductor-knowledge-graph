@@ -8,10 +8,12 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 import settings
 
 db = SQLAlchemy()
+migrate = Migrate()
 
 
 def init_db(app) -> None:
@@ -25,5 +27,6 @@ def init_db(app) -> None:
     app.config["SECRET_KEY"] = settings.FLASK_SECRET_KEY
     if "sqlalchemy" not in app.extensions:
         db.init_app(app)
+        migrate.init_app(app, db)
     with app.app_context():
         db.create_all()

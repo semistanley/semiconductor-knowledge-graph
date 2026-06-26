@@ -1,3 +1,8 @@
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 const chatEl = document.getElementById('chat');
 const qEl = document.getElementById('q');
 const sendBtn = document.getElementById('send');
@@ -354,7 +359,7 @@ function renderNodeDetails(nodeData, graphSnapshot) {
 
   html += `  <div class="detail-section">`;
   html += `    <div class="detail-section-title">核心描述</div>`;
-  html += `    <div class="detail-text">${desc}</div>`;
+  html += `    <div class="detail-text">${escapeHtml(desc)}</div>`;
   html += `  </div>`;
 
   if (evidence) {

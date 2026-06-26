@@ -19,10 +19,13 @@ COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN sed -i 's/\r$//' /docker-entrypoint.sh \
     && chmod +x /docker-entrypoint.sh \
-    && mkdir -p web_app/data automation/inbox automation/outbox automation/processed automation/logs
+    && mkdir -p web_app/data automation/inbox automation/outbox automation/processed automation/logs \
+    && useradd -m -u 1000 -s /bin/bash kguser \
+    && chown -R kguser:kguser /app
 
 ENV PYTHONPATH=/app:/app/web_app
 
+USER kguser
 EXPOSE 5000
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
