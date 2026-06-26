@@ -359,6 +359,20 @@ class 半导体知识图谱系统:
             main_res = QueryResult(cypher_query="", result=[], execution_time=0.0)
 
         keywords = self._extract_keywords(main_res) if main_res.result else []
+        if not keywords:
+            import re
+            found = re.findall(r"[A-Z][A-Za-z0-9-]{1,20}|[一-鿿]{2,8}", scenario)
+            stop = {"the","and","for","from","to","in","of","is","are","an","a","if","export","ban","china","chinese","fabs","equipment","lithography","semiconductor"}
+            keywords = [w for w in found if w.lower() not in stop][:8]
+        if not keywords:
+            words = re.findall(r"[A-Za-z0-9-]{2,}|[一-鿿]{2,6}", scenario)
+            for w in words[:5]:
+                try:
+                    r = self.driver.session().run("MATCH (n) WHERE toLower(n.name) CONTAINS toLower($w) RETURN n.name LIMIT 1", w=w)
+                    rec = r.single()
+                    if rec: keywords.append(rec["n.name"])
+                except Exception: pass
+            keywords = list(dict.fromkeys(keywords))[:8]
 
         # BFS traversal: find all nodes 1-2 hops from affected nodes
         affected_nodes = []
