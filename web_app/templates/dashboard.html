@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ROI Dashboard - KG Platform</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="/static/js/echarts.min.js"></script>
+  <style>
+    .dash-container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .dash-hero { text-align: center; padding: 24px 0; }
+    .dash-hero h1 { font-size: 32px; font-weight: 800; margin: 0; }
+    .dash-hero p { color: var(--muted); font-size: 15px; margin: 8px 0 0; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+    .kpi-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 6px 24px rgba(20,33,61,0.05); }
+    .kpi-card .kpi-val { font-size: 44px; font-weight: 800; }
+    .kpi-card .kpi-label { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .kpi-card .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .kpi-card.green .kpi-val { color: #18a999; }
+    .kpi-card.blue .kpi-val { color: var(--brand); }
+    .kpi-card.orange .kpi-val { color: #ff8c42; }
+    .kpi-card.purple .kpi-val { color: #9b5de5; }
+    .section { margin: 32px 0; }
+    .section h2 { font-size: 22px; font-weight: 700; margin: 0 0 16px; }
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .chart-box { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px; height: 320px; box-shadow: 0 6px 24px rgba(20,33,61,0.05); }
+    .investor-narrative { background: linear-gradient(135deg, rgba(74,103,255,0.06), rgba(24,169,153,0.06)); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin: 24px 0; }
+    .investor-narrative h3 { margin: 0 0 12px; font-size: 18px; }
+    .investor-narrative p { color: var(--muted); line-height: 1.8; font-size: 14px; }
+    .investor-narrative .highlight { color: var(--brand); font-weight: 700; }
+    @media (max-width: 768px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } .chart-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">ROI Dashboard</div>
+            <div class="nav">
+        <a href="/app">Chat</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/news">News</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+      </div>
+    </div>
+
+    <div class="dash-container">
+      <div class="dash-hero">
+        <h1>Platform ROI Dashboard</h1>
+        <p>Real-time metrics showing the value created by the knowledge graph platform</p>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid" id="kpi-grid">
+        <div class="kpi-card green"><div class="kpi-val" id="kpi-hours">--</div><div class="kpi-label">Engineering Hours Saved</div></div>
+        <div class="kpi-card blue"><div class="kpi-val" id="kpi-value">--</div><div class="kpi-label">Equivalent Value (RMB)</div></div>
+        <div class="kpi-card orange"><div class="kpi-val" id="kpi-queries">--</div><div class="kpi-label">Total Queries</div></div>
+        <div class="kpi-card purple"><div class="kpi-val" id="kpi-users">--</div><div class="kpi-label">Registered Users</div></div>
+      </div>
+
+      <!-- Charts -->
+      <div class="section">
+        <h2>Platform Growth</h2>
+        <div class="chart-row">
+          <div class="chart-box" id="chart-growth"></div>
+          <div class="chart-box" id="chart-activity"></div>
+        </div>
+      </div>
+
+      <!-- Investor Narrative -->
+      <div class="investor-narrative">
+        <h3>Investor Summary</h3>
+        <p>
+          The platform has saved an estimated <span class="highlight" id="nar-hours">--</span> engineering hours,
+          equivalent to <span class="highlight" id="nar-value">--</span> in labor cost savings.
+          With <span class="highlight" id="nar-users">--</span> registered users and
+          <span class="highlight" id="nar-queries">--</span> AI-powered queries,
+          the knowledge graph now covers <span class="highlight" id="nar-nodes">--</span> technology nodes
+          connected by <span class="highlight" id="nar-rels">--</span> verified relationships.
+          Each new user and contribution deepens the network effect, creating an accumulating data moat.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+(async function() {
+  function sv(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  try{
+    var r=await fetch('/api/dashboard');
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    var d=await r.json();
+    if(d.code==='UNAUTHORIZED'){window.location.href='/login';return;}
+    var h=(d.queries_total||0)*0.25, val=Math.round(h*500);
+    sv('kpi-hours',Math.round(h)); sv('kpi-value','\u00a5'+val.toLocaleString());
+    sv('kpi-queries',d.queries_total||0); sv('kpi-users',d.user_count||0);
+    sv('nar-hours',Math.round(h)); sv('nar-value','\u00a5'+val.toLocaleString());
+    sv('nar-users',d.user_count); sv('nar-queries',d.queries_total);
+    sv('nar-nodes',d.node_count||'--'); sv('nar-rels',d.relation_count||'--');
+
+    var w=(d.weekly_activity||[]).map(function(a){return a.week});
+    var qs=(d.weekly_activity||[]).map(function(a){return a.queries||0});
+    var us=(d.weekly_activity||[]).map(function(a){return a.users||0});
+
+    var c1=echarts.init(document.getElementById('chart-growth'));
+    c1.setOption({title:{text:'User Growth',textStyle:{fontSize:14}},xAxis:{type:'category',data:w},yAxis:{type:'value'},
+      series:[{name:'Users',type:'bar',data:us,itemStyle:{color:'#4a67ff',borderRadius:[6,6,0,0]}}],
+      grid:{left:50,right:20,top:40,bottom:30}});
+
+    var c2=echarts.init(document.getElementById('chart-activity'));
+    c2.setOption({title:{text:'Weekly Queries',textStyle:{fontSize:14}},xAxis:{type:'category',data:w},yAxis:{type:'value'},
+      series:[{name:'Queries',type:'line',smooth:true,data:qs,lineStyle:{width:3,color:'#18a999'},
+      itemStyle:{color:'#18a999'},areaStyle:{color:'rgba(24,169,153,0.1)'}}],
+      grid:{left:50,right:20,top:40,bottom:30}});
+    window.addEventListener('resize',function(){c1.resize();c2.resize();});
+  }catch(e){sv('kpi-hours','ERR');sv('kpi-value','ERR');}
+})();</script>
+
+</body>
+</html>

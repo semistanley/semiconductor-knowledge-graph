@@ -1,0 +1,398 @@
+{
+  "source_doc": "半导体沉积工艺.docx",
+  "source_version": "v1",
+  "extracted_at": "2026-01-07T09:42:32.274650Z",
+  "entities": [
+    {
+      "label": "Technology",
+      "name": "物理气相沉积",
+      "description": "在真空环境中，通过物理方式（如蒸发、溅射）将固体源材料转化为气态，再凝结在衬底表面形成薄膜。",
+      "properties": {
+        "evidence": "物理气相沉积"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Technology",
+      "name": "PVD",
+      "description": "物理气相沉积工艺，如磁控溅射，因其良好的台阶覆盖性和高纯度，广泛用于金属互连层（如铝、铜）和屏障层（如氮化钛）的制备。",
+      "properties": {
+        "evidence": "PVD工艺（如磁控溅射）"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Technology",
+      "name": "化学气相沉积",
+      "description": "通过气态前驱体在衬底表面发生化学反应，生成固态薄膜并副产物排出。能实现高度共形、均匀的薄膜沉积。",
+      "properties": {
+        "evidence": "化学气相沉积"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Technology",
+      "name": "CVD",
+      "description": "化学气相沉积工艺，是沉积二氧化硅（SiO₂）、氮化硅（Si₃N₄）等介质层以及多晶硅栅极的关键技术。",
+      "properties": {
+        "evidence": "CVD工艺"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Technology",
+      "name": "原子层沉积",
+      "description": "通过在表面依次发生自限制性化学反应，能实现亚纳米级的厚度控制和极致共形性，适用于高深宽比结构中的栅极介质、扩散屏障层沉积。",
+      "properties": {
+        "evidence": "原子层沉积"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Method",
+      "name": "蒸发",
+      "description": "物理气相沉积中的一种物理方式。",
+      "properties": {
+        "evidence": "蒸发"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Method",
+      "name": "溅射",
+      "description": "物理气相沉积中的一种物理方式。",
+      "properties": {
+        "evidence": "溅射"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "SubMethod",
+      "name": "磁控溅射",
+      "description": "PVD工艺的一种，具有良好的台阶覆盖性和高纯度。",
+      "properties": {
+        "evidence": "磁控溅射"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Material",
+      "name": "铝",
+      "description": "用于金属互连层的材料。",
+      "properties": {
+        "evidence": "铝"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Material",
+      "name": "铜",
+      "description": "用于金属互连层的材料。",
+      "properties": {
+        "evidence": "铜"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Material",
+      "name": "氮化钛",
+      "description": "用于屏障层的材料。",
+      "properties": {
+        "evidence": "氮化钛"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Material",
+      "name": "二氧化硅",
+      "description": "SiO₂，可由CVD沉积的介质层材料。",
+      "properties": {
+        "evidence": "二氧化硅（SiO₂）"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Material",
+      "name": "氮化硅",
+      "description": "Si₃N₄，可由CVD沉积的介质层材料。",
+      "properties": {
+        "evidence": "氮化硅（Si₃N₄）"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Material",
+      "name": "多晶硅",
+      "description": "用于栅极的材料，可由CVD沉积。",
+      "properties": {
+        "evidence": "多晶硅栅极"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Capability",
+      "name": "台阶覆盖性",
+      "description": "PVD工艺（如磁控溅射）具有良好的台阶覆盖性。",
+      "properties": {
+        "evidence": "良好的台阶覆盖性"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Capability",
+      "name": "高纯度",
+      "description": "PVD工艺（如磁控溅射）具有高纯度。",
+      "properties": {
+        "evidence": "高纯度"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Capability",
+      "name": "高度共形",
+      "description": "CVD工艺能实现高度共形的薄膜沉积。",
+      "properties": {
+        "evidence": "高度共形"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Capability",
+      "name": "均匀",
+      "description": "CVD工艺能实现均匀的薄膜沉积。",
+      "properties": {
+        "evidence": "均匀"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Capability",
+      "name": "亚纳米级的厚度控制",
+      "description": "原子层沉积能实现亚纳米级的厚度控制。",
+      "properties": {
+        "evidence": "亚纳米级的厚度控制"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Capability",
+      "name": "极致共形性",
+      "description": "原子层沉积能实现极致共形性。",
+      "properties": {
+        "evidence": "极致共形性"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "ChipStructure",
+      "name": "金属互连层",
+      "description": "PVD工艺广泛用于金属互连层的制备。",
+      "properties": {
+        "evidence": "金属互连层"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "ChipStructure",
+      "name": "屏障层",
+      "description": "PVD工艺广泛用于屏障层的制备。",
+      "properties": {
+        "evidence": "屏障层"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "ChipStructure",
+      "name": "介质层",
+      "description": "CVD是沉积二氧化硅、氮化硅等介质层的关键技术。",
+      "properties": {
+        "evidence": "介质层"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "ChipStructure",
+      "name": "栅极",
+      "description": "CVD是沉积多晶硅栅极的关键技术。",
+      "properties": {
+        "evidence": "多晶硅栅极"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "ChipStructure",
+      "name": "高深宽比结构",
+      "description": "原子层沉积适用于高深宽比结构中的沉积。",
+      "properties": {
+        "evidence": "高深宽比结构"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "ChipStructure",
+      "name": "栅极介质",
+      "description": "原子层沉积适用于高深宽比结构中的栅极介质沉积。",
+      "properties": {
+        "evidence": "栅极介质"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "ChipStructure",
+      "name": "扩散屏障层",
+      "description": "原子层沉积适用于高深宽比结构中的扩散屏障层沉积。",
+      "properties": {
+        "evidence": "扩散屏障层"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "ManufacturingStage",
+      "name": "沉积工艺",
+      "description": "半导体沉积工艺是现代集成电路制造中的核心步骤之一。",
+      "properties": {
+        "evidence": "沉积工艺"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Technology",
+      "name": "低温ALD",
+      "description": "工艺开发的重点转向了低温ALD等技术。",
+      "properties": {
+        "evidence": "低温ALD"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Technology",
+      "name": "选择性沉积",
+      "description": "工艺开发的重点转向了选择性沉积等技术。",
+      "properties": {
+        "evidence": "选择性沉积"
+      },
+      "confirmed": false
+    },
+    {
+      "label": "Technology",
+      "name": "等离子体增强",
+      "description": "工艺开发的重点转向了等离子体增强等技术。",
+      "properties": {
+        "evidence": "等离子体增强"
+      },
+      "confirmed": false
+    }
+  ],
+  "relations": [
+    {
+      "start_label": "Technology",
+      "start_name": "物理气相沉积",
+      "rel_type": "HAS_METHOD",
+      "end_label": "Method",
+      "end_name": "蒸发",
+      "description": "物理气相沉积通过物理方式如蒸发实现。",
+      "properties": {
+        "evidence": "通过物理方式（如蒸发、溅射）"
+      },
+      "confirmed": false
+    },
+    {
+      "start_label": "Technology",
+      "start_name": "物理气相沉积",
+      "rel_type": "HAS_METHOD",
+      "end_label": "Method",
+      "end_name": "溅射",
+      "description": "物理气相沉积通过物理方式如溅射实现。",
+      "properties": {
+        "evidence": "通过物理方式（如蒸发、溅射）"
+      },
+      "confirmed": false
+    },
+    {
+      "start_label": "Technology",
+      "start_name": "PVD",
+      "rel_type": "HAS_SUBMETHOD",
+      "end_label": "SubMethod",
+      "end_name": "磁控溅射",
+      "description": "PVD工艺包括磁控溅射。",
+      "properties": {
+        "evidence": "PVD工艺（如磁控溅射）"
+      },
+      "confirmed": false
+    },
+    {
+      "start_label": "Technology",
+      "start_name": "PVD",
+      "rel_type": "USED_FOR",
+      "end_label": "ChipStructure",
+      "end_name": "金属互连层",
+      "description": "PVD广泛用于金属互连层的制备。",
+      "properties": {
+        "evidence": "广泛用于金属互连层（如铝、铜）"
+      },
+      "confirmed": false
+    },
+    {
+      "start_label": "Technology",
+      "start_name": "PVD",
+      "rel_type": "USED_FOR",
+      "end_label": "ChipStructure",
+      "end_name": "屏障层",
+      "description": "PVD广泛用于屏障层的制备。",
+      "properties": {
+        "evidence": "和屏障层（如氮化钛）的制备"
+      },
+      "confirmed": false
+    },
+    {
+      "start_label": "Technology",
+      "start_name": "CVD",
+      "rel_type": "USED_FOR",
+      "end_label": "ChipStructure",
+      "end_name": "介质层",
+      "description": "CVD是沉积介质层的关键技术。",
+      "properties": {
+        "evidence": "是沉积二氧化硅（SiO₂）、氮化硅（Si₃N₄）等介质层"
+      },
+      "confirmed": false
+    },
+    {
+      "start_label": "Technology",
+      "start_name": "CVD",
+      "rel_type": "USED_FOR",
+      "end_label": "ChipStructure",
+      "end_name": "栅极",
+      "description": "CVD是沉积多晶硅栅极的关键技术。",
+      "properties": {
+        "evidence": "以及多晶硅栅极的关键技术"
+      },
+      "confirmed": false
+    },
+    {
+      "start_label": "Technology",
+      "start_name": "原子层沉积",
+      "rel_type": "USED_FOR",
+      "end_label": "ChipStructure",
+      "end_name": "栅极介质",
+      "description": "原子层沉积适用于栅极介质沉积。",
+      "properties": {
+        "evidence": "适用于高深宽比结构中的栅极介质"
+      },
+      "confirmed": false
+    },
+    {
+      "start_label": "Technology",
+      "start_name": "原子层沉积",
+      "rel_type": "USED_FOR",
+      "end_label": "ChipStructure",
+      "end_name": "扩散屏障层",
+      "description": "原子层沉积适用于扩散屏障层沉积。",
+      "properties": {
+        "evidence": "扩散屏障层沉积"
+      },
+      "confirmed": false
+    }
+  ],
+  "measurements": [],
+  "warnings": []
+}

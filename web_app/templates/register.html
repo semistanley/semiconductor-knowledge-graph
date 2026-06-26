@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>注册 - 半导体知识图谱平台</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1>创建账号</h1>
+      <p class="auth-sub">注册后所有问答、文档与图谱更新将自动归档</p>
+      <form id="register-form" class="auth-form">
+        <label>用户名</label>
+        <input id="username" class="input" type="text" required minlength="3" autocomplete="username" />
+        <label>邮箱</label>
+        <input id="email" class="input" type="email" required autocomplete="email" />
+        <label>密码</label>
+        <input id="password" class="input" type="password" required minlength="6" autocomplete="new-password" />
+        <label>确认密码</label>
+        <input id="password2" class="input" type="password" required minlength="6" autocomplete="new-password" />
+        <button type="submit" class="btn auth-btn">注册</button>
+        <p id="error" class="auth-error"></p>
+      </form>
+      <p class="auth-footer">已有账号？<a href="/login">去登录</a></p>
+    </div>
+  </div>
+  <script>
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('error');
+      errEl.textContent = '';
+      const pw = document.getElementById('password').value;
+      const pw2 = document.getElementById('password2').value;
+      if (pw !== pw2) {
+        errEl.textContent = '两次密码不一致';
+        return;
+      }
+      try {
+        const resp = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            password: pw,
+          }),
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          errEl.textContent = data.error || '注册失败';
+          return;
+        }
+        window.location.href = '/';
+      } catch (err) {
+        errEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

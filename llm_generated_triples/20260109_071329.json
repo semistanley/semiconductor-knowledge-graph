@@ -1,0 +1,18 @@
+{
+  "source_doc": "llm_generated",
+  "source_version": "llm_generated",
+  "extracted_at": "2026-01-09T07:13:26.576967Z",
+  "entities": [
+    {
+      "description": "一种依赖TSV等高深宽比结构实现垂直互连的集成技术",
+      "evidence": "三维集成依赖TSV（硅通孔）等高深宽比结构实现垂直互连",
+      "label": "Technology",
+      "name": "三维集成",
+      "properties": {},
+      "confirmed": true
+    }
+  ],
+  "relations": [],
+  "measurements": [],
+  "warnings": []
+}

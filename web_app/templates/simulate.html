@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Supply Chain Simulator - KG Platform</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="/static/js/echarts.min.js"></script>
+  <style>
+    .sim-container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .sim-hero { text-align: center; padding: 32px 0; }
+    .sim-hero h1 { font-size: 32px; font-weight: 800; margin: 0; }
+    .sim-hero p { color: var(--muted); font-size: 15px; margin: 10px 0 0; }
+    .preset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+    .preset-card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; cursor: pointer; transition: all 0.2s; font-size: 13px; text-align: left; }
+    .preset-card:hover { border-color: var(--brand); background: rgba(74,103,255,0.04); }
+    .preset-card .icon { font-size: 24px; margin-bottom: 6px; }
+    .preset-card .title { font-weight: 700; margin-bottom: 4px; }
+    .preset-card .desc { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .sim-input-row { display: flex; gap: 12px; margin: 20px 0; }
+    .sim-input-row .input { flex: 1; min-height: 68px; font-size: 15px; }
+    .sim-input-row .btn { padding: 14px 28px; font-size: 16px; font-weight: 700; white-space: nowrap; }
+    .result-box { margin-top: 24px; display: none; }
+    .result-box.show { display: block; }
+    .impact-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    .impact-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+    .impact-card .val { font-size: 32px; font-weight: 800; color: var(--brand); }
+    .impact-card .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .impact-card.warn .val { color: #ff4d6d; }
+    .analysis-box { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 16px 0; line-height: 1.8; white-space: pre-wrap; }
+    .analysis-box h3 { margin: 0 0 12px; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .shock-tag { background: rgba(255,77,109,0.1); color: #ff4d6d; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+    .alt-tag { background: rgba(24,169,153,0.1); color: #18a999; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+    @media (max-width: 768px) { .preset-grid { grid-template-columns: 1fr; } .impact-metrics { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">Supply Chain Shock Simulator</div>
+            <div class="nav">
+        <a href="/app">Chat</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/news">News</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+      </div>
+    </div>
+
+    <div class="sim-container">
+      <div class="sim-hero">
+        <h1>Supply Chain Shock Simulator</h1>
+        <p>Model the impact of geopolitical events, technology bans, or supply disruptions on the semiconductor ecosystem</p>
+      </div>
+
+      <div class="preset-grid">
+        <div class="preset-card" onclick="runPreset('EUV lithography equipment export ban to China')">
+          <div class="icon">🛑</div>
+          <div class="title">EUV Export Ban</div>
+          <div class="desc">Simulate impact of advanced lithography equipment restrictions</div>
+        </div>
+        <div class="preset-card" onclick="runPreset('Gallium and Germanium export controls affecting compound semiconductors')">
+          <div class="icon">⛓️</div>
+          <div class="title">Material Export Control</div>
+          <div class="desc">Trace impact of rare material supply chain disruption</div>
+        </div>
+        <div class="preset-card" onclick="runPreset('TSMC 3nm fab production halt due to earthquake')">
+          <div class="icon">🌊</div>
+          <div class="title">Fab Outage Scenario</div>
+          <div class="desc">Model downstream effects of major fab production stoppage</div>
+        </div>
+      </div>
+
+      <div class="sim-input-row">
+        <textarea id="scenario" class="input" placeholder="Describe a supply chain shock scenario...&#10;&#10;E.g.: ASML EUV lithography systems banned from shipping to Chinese fabs. What technologies, equipment, and materials are affected? What are the alternative paths?"></textarea>
+        <button id="run-btn" class="btn">Simulate<br>Impact</button>
+      </div>
+
+      <div id="result" class="result-box">
+        <div class="impact-metrics">
+          <div class="impact-card"><div class="val" id="m-total">--</div><div class="lbl">Affected Nodes</div></div>
+          <div class="impact-card"><div class="val" id="m-paths">--</div><div class="lbl">Impact Paths</div></div>
+          <div class="impact-card warn"><div class="val" id="m-equip">--</div><div class="lbl">Equipment at Risk</div></div>
+          <div class="impact-card warn"><div class="val" id="m-mat">--</div><div class="lbl">Materials at Risk</div></div>
+        </div>
+        <div class="analysis-box" id="analysis"></div>
+        <div id="affected-tags"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+function runPreset(s){document.getElementById('scenario').value=s;runSimulation();}
+async function runSimulation(){
+  var s=document.getElementById('scenario').value.trim();
+  if(!s){alert('Please enter a scenario');return;}
+  var b=document.getElementById('run-btn');b.textContent='Running...';b.disabled=true;
+  try{
+    var r=await fetch('/api/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scenario:s})});
+    var d=await r.json();
+    if(d.code==='UNAUTHORIZED'){window.location.href='/login';return;}
+    if(d.error){alert(d.error);return;}
+    document.getElementById('m-total').textContent=d.affected_count||0;
+    document.getElementById('m-paths').textContent=(d.impact_paths||[]).length;
+    document.getElementById('m-equip').textContent=(d.equipment_impact||[]).length;
+    document.getElementById('m-mat').textContent=(d.material_impact||[]).length;
+    document.getElementById('analysis').innerHTML='<h3>AI Impact Analysis</h3>'+(d.analysis||'No analysis.').replace(/\n/g,'<br>');
+    var tags='';(d.affected_nodes||[]).slice(0,15).forEach(function(n){tags+='<span class="shock-tag">'+n+'</span> '});
+    document.getElementById('affected-tags').innerHTML=tags?'<div class="tag-list">'+tags+'</div>':'';
+    document.getElementById('result').classList.add('show');
+  }catch(e){alert('Failed: '+e.message);}
+  finally{b.textContent='Simulate\nImpact';b.disabled=false;}
+}
+document.getElementById('run-btn').addEventListener('click',runSimulation);
+document.getElementById('scenario').addEventListener('keydown',function(e){if(e.key==='Enter'&&e.shiftKey){e.preventDefault();runSimulation();}});
+</script>
+
+</body>
+</html>

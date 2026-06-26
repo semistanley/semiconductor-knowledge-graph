@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leaderboard - KG Platform</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <style>
+    .lb-container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .lb-hero { text-align: center; padding: 24px 0; }
+    .lb-hero h1 { font-size: 32px; font-weight: 800; }
+    .lb-hero p { color: var(--muted); margin: 8px 0 0; }
+    .lb-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .lb-table th { text-align: left; padding: 12px 16px; font-size: 12px; color: var(--muted); border-bottom: 2px solid var(--border); }
+    .lb-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .lb-table tr:hover { background: rgba(74,103,255,0.03); }
+    .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 14px; }
+    .rank-1 { background: linear-gradient(135deg, #ffd700, #ffb800); color: #fff; }
+    .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #fff; }
+    .rank-3 { background: linear-gradient(135deg, #cd7f32, #b0702a); color: #fff; }
+    .rank-n { background: var(--panel-2); color: var(--muted); }
+    .user-cell { display: flex; align-items: center; gap: 12px; }
+    .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+    .user-info { line-height: 1.4; }
+    .user-name { font-weight: 700; }
+    .user-org { font-size: 12px; color: var(--muted); }
+    .score-bar { width: 100px; height: 6px; border-radius: 3px; background: var(--panel-2); display: inline-block; vertical-align: middle; margin-left: 8px; }
+    .score-fill { height: 100%; border-radius: 3px; background: var(--brand); }
+    .badge-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; margin: 1px; }
+    .badge-tag.gold { background: rgba(255,215,0,0.15); color: #b8960a; }
+    .badge-tag.silver { background: rgba(192,192,192,0.2); color: #666; }
+    .verified-star { color: #ffb800; margin-left: 4px; }
+    .my-position { background: rgba(74,103,255,0.08); border: 1px solid var(--brand); border-radius: 12px; padding: 16px; margin: 20px 0; text-align: center; }
+    .invite-box { background: var(--panel); border: 1px dashed var(--brand); border-radius: 12px; padding: 20px; margin: 24px 0; text-align: center; }
+    .invite-box input { width: 100%; max-width: 500px; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 14px; text-align: center; margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">Expert Leaderboard</div>
+            <div class="nav">
+        <a href="/">Home</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/news">News</a>
+        {% if user %}
+        <a href="/app">Chat</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/profile">Profile</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+        {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="lb-container">
+      <div class="lb-hero">
+        <h1>Semiconductor Knowledge Experts</h1>
+        <p>Contribute knowledge, earn reputation, build your professional brand</p>
+      </div>
+
+      <div class="invite-box">
+        <h3>Invite a Colleague</h3>
+        <p class="muted">Both you and your colleague earn +50 credits when they sign up and make their first contribution</p>
+        <input id="invite-link" type="text" readonly value="Loading..." onclick="this.select()" />
+      </div>
+
+      <div id="my-position"></div>
+
+      <table class="lb-table">
+        <thead>
+          <tr><th>Rank</th><th>Expert</th><th>Reputation</th><th>Contrib.</th><th>Verified</th><th>Badges</th></tr>
+        </thead>
+        <tbody id="lb-body">
+          <tr><td colspan="6" class="muted" style="text-align:center;padding:40px">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+(async function(){
+  function el(id){return document.getElementById(id);}
+  try{var mr=await fetch('/api/auth/me');var md=await mr.json();
+    var ie=el('invite-link');if(ie)ie.value=window.location.origin+'/register?ref='+(md.user?md.user.id:'?');}catch(e){}
+  try{
+    var r=await fetch('/api/leaderboard');var d=await r.json();var lb=d.leaderboard||[];
+    if(d.my_rank){var p=el('my-position');if(p)p.innerHTML='<div class="my-position">Your rank: <b>#'+d.my_rank+'</b> &middot; Reputation: <b>'+(d.my_score||0)+'</b> &middot; Credits: <b>'+(d.my_credits||0)+'</b></div>';}
+    var rows='';
+    lb.forEach(function(u){
+      var rc=u.rank===1?'rank-1':u.rank===2?'rank-2':u.rank===3?'rank-3':'rank-n';
+      rows+='<tr><td><span class="rank-badge '+rc+'">'+u.rank+'</span></td>'+
+        '<td><div class="user-cell"><div class="user-avatar">'+(u.username?u.username[0].toUpperCase():'?')+'</div>'+
+        '<div class="user-info"><div class="user-name">'+u.username+(u.is_verified_pro?' <span class="verified-star">&star;</span>':'')+'</div>'+
+        '<div class="user-org">'+(u.company||'')+(u.company&&u.role?' / ':'')+(u.role||'')+'</div></div></div></td>'+
+        '<td><b>'+u.reputation_score+'</b><div class="score-bar"><div class="score-fill" style="width:'+Math.round(u.reputation_score)+'%"></div></div></td>'+
+        '<td>'+u.contributions_count+'</td><td>'+u.verifications_received+'</td><td>'+(u.badges&&u.badges.length?u.badges.map(function(b){return'<span class="badge-tag '+(b.level==='gold'?'gold':'silver')+'">'+b.name+'</span>'}).join(''):'<span class="muted">--</span>')+'</td></tr>';
+    });
+    var bd=el('lb-body');if(bd)bd.innerHTML=rows;
+  }catch(e){var bd=el('lb-body');if(bd)bd.innerHTML='<tr><td colspan="6" class="muted" style="text-align:center;padding:40px">Failed to load. Please refresh.</td></tr>';}
+})();</script>
+
+</body>
+</html>

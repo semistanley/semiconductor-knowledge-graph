@@ -1,0 +1,12 @@
+.venv
+__pycache__
+*.pyc
+.git
+.idea
+web_app/data
+*.db
+llm_raw_output.txt
+automation/inbox/*
+automation/outbox/*
+automation/processed/*
+automation/logs/*

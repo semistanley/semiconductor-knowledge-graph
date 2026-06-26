@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Investment Signals - KG Platform</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="/static/js/echarts.min.js"></script>
+  <style>
+    .sig-container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .sig-hero { text-align: center; padding: 24px 0; }
+    .sig-hero h1 { font-size: 32px; font-weight: 800; margin: 0; }
+    .sig-hero p { color: var(--muted); font-size: 15px; margin: 8px 0 0; }
+    .signal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin: 24px 0; }
+    .signal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 6px 24px rgba(20,33,61,0.05); position: relative; }
+    .signal-card.red { border-left: 4px solid #ff4d6d; }
+    .signal-card.yellow { border-left: 4px solid #ffc107; }
+    .signal-card.green { border-left: 4px solid #18a999; }
+    .signal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .signal-name { font-size: 18px; font-weight: 700; }
+    .signal-badge { font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; }
+    .badge-red { background: rgba(255,77,109,0.12); color: #ff4d6d; }
+    .badge-yellow { background: rgba(255,193,7,0.12); color: #c79100; }
+    .badge-green { background: rgba(24,169,153,0.12); color: #18a999; }
+    .score-bar { height: 6px; border-radius: 3px; margin: 8px 0 12px; background: var(--panel-2); }
+    .score-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+    .score-fill.high { background: #ff4d6d; }
+    .score-fill.med { background: #ffc107; }
+    .score-fill.low { background: #18a999; }
+    .signal-detail { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .company-tags { margin-top: 10px; }
+    .gap-section { margin: 32px 0; }
+    .gap-section h2 { font-size: 22px; font-weight: 700; margin: 0 0 16px; }
+    .gap-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin: 12px 0; }
+    .gap-card h4 { margin: 0 0 6px; font-size: 15px; }
+    .gap-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .gap-type { font-size: 11px; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
+    .gap-synergy { background: rgba(74,103,255,0.1); color: var(--brand); }
+    .gap-underexplored { background: rgba(255,193,7,0.1); color: #c79100; }
+    .gap-equipment { background: rgba(24,169,153,0.1); color: #18a999; }
+    .analysis-card { background: linear-gradient(135deg, rgba(74,103,255,0.04), rgba(24,169,153,0.04)); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin: 24px 0; white-space: pre-wrap; line-height: 1.8; }
+    .chart-box { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px; height: 380px; margin: 24px 0; box-shadow: 0 6px 24px rgba(20,33,61,0.05); }
+    .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+    .summary-item { text-align: center; padding: 16px; border-radius: 12px; }
+    .summary-item .num { font-size: 36px; font-weight: 800; }
+    .summary-item .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .summary-item.red { background: rgba(255,77,109,0.08); } .summary-item.red .num { color: #ff4d6d; }
+    .summary-item.yellow { background: rgba(255,193,7,0.08); } .summary-item.yellow .num { color: #c79100; }
+    .summary-item.gap-item { background: rgba(74,103,255,0.06); } .summary-item.gap-item .num { color: var(--brand); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">Investment Intelligence</div>
+            <div class="nav">
+        <a href="/app">Chat</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/news">News</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+      </div>
+    </div>
+
+    <div class="sig-container">
+      <div class="sig-hero">
+        <h1>Technology Investment Signals</h1>
+        <p>Data-driven signals from the knowledge graph: heat, maturity, commercialization potential</p>
+      </div>
+
+      <div class="summary-bar" id="summary"></div>
+
+      <h2>Technology Heat Map</h2>
+      <div class="signal-grid" id="signal-grid">
+        <p class="muted">Loading signals...</p>
+      </div>
+
+      <div class="chart-box" id="heatmap-chart"></div>
+
+      <div class="gap-section">
+        <h2>Technology Gap Radar</h2>
+        <div id="gap-list">
+          <p class="muted">Scanning for knowledge gaps...</p>
+        </div>
+        <div class="analysis-card" id="gap-analysis"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+(async function(){
+  function el(id){return document.getElementById(id);}
+  try{
+    var sr=await fetch('/api/signals');
+    if(!sr.ok)throw new Error('HTTP '+sr.status);
+    var sd=await sr.json();
+    if(sd.code==='UNAUTHORIZED'){window.location.href='/login';return;}
+    var sigs=sd.signals||[];
+
+    var sum=el('summary'); if(sum)sum.innerHTML=
+      '<div class="summary-item red"><div class="num">'+(sd.red||0)+'</div><div class="lbl">High Priority</div></div>'+
+      '<div class="summary-item yellow"><div class="num">'+(sd.yellow||0)+'</div><div class="lbl">Watch</div></div>'+
+      '<div class="summary-item gap-item"><div class="num" id="gap-total">--</div><div class="lbl">Knowledge Gaps</div></div>';
+
+    var cards='';
+    sigs.slice(0,12).forEach(function(s){
+      var c=s.signal.toLowerCase();
+      cards+='<div class="signal-card '+c+'" style="border-left:4px solid '+
+        (c==='red'?'#ff4d6d':c==='yellow'?'#ffc107':'#18a999')+'">'+
+        '<div class="signal-header"><span class="signal-name">'+s.technology+'</span>'+
+        '<span class="signal-badge badge-'+c+'">'+s.signal+'</span></div>'+
+        '<div class="signal-detail">Heat:'+s.heat_score+' Maturity:'+s.maturity_score+
+        ' Commercialization:'+s.commercialization_score+'<br>Score:<b>'+s.composite_score+
+        '</b>/10 &middot; '+s.degree+' conn</div>'+
+        '<div class="score-bar"><div class="score-fill '+(s.composite_score>7?'high':s.composite_score>4.5?'med':'low')+
+        '" style="width:'+Math.round(s.composite_score*10)+'%"></div></div>'+
+        ((s.related_companies||[]).length? '<div class="company-tags">'+s.related_companies.map(function(c){return'<span class="tag">'+c+'</span>'}).join('')+'</div>':'')+
+      '</div>';
+    });
+    var g=el('signal-grid'); if(g)g.innerHTML=cards;
+
+    var ch=el('heatmap-chart');
+    if(ch){
+      var chart=echarts.init(ch);
+      var names=sigs.slice(0,15).map(function(s){return s.technology});
+      chart.setOption({
+        title:{text:'Investment Score Breakdown',textStyle:{fontSize:14}},tooltip:{trigger:'axis'},
+        legend:{data:['Heat','Maturity','Commercialization'],textStyle:{color:'#1b2430'}},
+        xAxis:{type:'category',data:names,axisLabel:{rotate:30,fontSize:11}},yAxis:{type:'value',max:10},
+        series:[
+          {name:'Heat',type:'bar',stack:'total',data:sigs.slice(0,15).map(function(s){return s.heat_score}),itemStyle:{color:'#ff4d6d'}},
+          {name:'Maturity',type:'bar',stack:'total',data:sigs.slice(0,15).map(function(s){return s.maturity_score}),itemStyle:{color:'#ffc107'}},
+          {name:'Commercialization',type:'bar',stack:'total',data:sigs.slice(0,15).map(function(s){return s.commercialization_score}),itemStyle:{color:'#18a999'}}
+        ],grid:{left:50,right:20,top:50,bottom:80}});
+      window.addEventListener('resize',function(){chart.resize();});
+    }
+
+    try{
+      var gr=await fetch('/api/gaps');var gd=await gr.json();
+      var gt=el('gap-total');if(gt)gt.textContent=gd.total_gaps||0;
+      var gh='';
+      (gd.gaps||[]).slice(0,10).forEach(function(g){
+        var tl=g.type==='missed_synergy'?'Synergy Gap':g.type==='underexplored'?'Underexplored':'Unlinked Eq';
+        var tc=g.type==='missed_synergy'?'gap-synergy':g.type==='underexplored'?'gap-underexplored':'gap-equipment';
+        gh+='<div class="gap-card"><h4>'+(g.tech_a?g.tech_a+' <-> '+g.tech_b:(g.tech||g.equipment||'?'))+
+          '<span class="gap-type '+tc+'">'+tl+'</span></h4><p>'+(g.summary||g.description||'')+'</p></div>';
+      });
+      var gl=el('gap-list');if(gl)gl.innerHTML=gh;
+      var ga=el('gap-analysis');if(ga)ga.innerHTML='<h3>AI Investment Analysis</h3>'+(gd.analysis||'No analysis.').replace(/\n/g,'<br>');
+    }catch(e){console.warn('Gaps:',e);}
+  }catch(e){var g=el('signal-grid');if(g)g.innerHTML='<p class="muted">Load failed. Please login and refresh.</p>';}
+})();</script>
+
+</body>
+</html>

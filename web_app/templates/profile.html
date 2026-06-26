@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile - KG Platform</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <style>
+    .pf-container { max-width: 800px; margin: 0 auto; padding: 24px; }
+    .pf-header { display: flex; gap: 20px; align-items: center; padding: 24px; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 24px; }
+    .pf-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #4a67ff, #18a999); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; }
+    .pf-info h2 { margin: 0; font-size: 24px; }
+    .pf-info .org { color: var(--muted); font-size: 14px; }
+    .pf-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .pf-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+    .pf-card .val { font-size: 28px; font-weight: 800; color: var(--brand); }
+    .pf-card .lbl { font-size: 12px; color: var(--muted); }
+    .pf-section { margin: 24px 0; }
+    .pf-section h3 { font-size: 18px; font-weight: 700; margin: 0 0 12px; }
+    .pf-edit { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .pf-edit label { font-size: 13px; color: var(--muted); display: block; margin: 10px 0 4px; }
+    .pf-edit input, .pf-edit select { width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); font-size: 14px; }
+    .pf-edit .btn { margin-top: 12px; }
+    .contrib-item { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .contrib-item .type { font-weight: 600; }
+    .contrib-item .credits { color: #18a999; font-weight: 700; }
+    .contrib-item .time { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">My Profile</div>
+            <div class="nav">
+        <a href="/app">Chat</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/news">News</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+      </div>
+    </div>
+
+    <div class="pf-container">
+      <div class="pf-header" id="pf-header">
+        <div class="pf-avatar" id="pf-avatar">?</div>
+        <div class="pf-info">
+          <h2 id="pf-name">--</h2>
+          <div class="org" id="pf-org">--</div>
+        </div>
+      </div>
+
+      <div class="pf-metrics" id="pf-metrics"></div>
+
+      <div class="pf-section">
+        <h3>Professional Info</h3>
+        <div class="pf-edit">
+          <label>Company / Organization</label>
+          <input id="edit-company" type="text" placeholder="e.g., TSMC, SMIC, Applied Materials..." />
+          <label>Role / Title</label>
+          <input id="edit-role" type="text" placeholder="e.g., Process Engineer, R&D Director..." />
+          <button class="btn" onclick="saveProfile()">Save Profile</button>
+        </div>
+      </div>
+
+      <div class="pf-section">
+        <h3>Recent Contributions</h3>
+        <div id="contrib-list"><p class="muted">Loading...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+(async function(){
+  function el(id){return document.getElementById(id);}
+  try{
+    var r=await fetch('/api/profile');if(!r.ok)throw new Error('HTTP '+r.status);
+    var d=await r.json();
+    if(d.code==='UNAUTHORIZED'){window.location.href='/login';return;}
+    var u=d.user||{},c=d.credits||{};
+    var av=el('pf-avatar');if(av)av.textContent=u.username?u.username[0].toUpperCase():'?';
+    var nm=el('pf-name');if(nm)nm.textContent=u.username||'--';
+    var og=el('pf-org');if(og)og.textContent=(c.company||'Add your company')+(c.role?' / '+c.role:'');
+    var ec=el('edit-company');if(ec)ec.value=c.company||'';
+    var er=el('edit-role');if(er)er.value=c.role||'';
+    var me=el('pf-metrics');if(me)me.innerHTML=
+      '<div class="pf-card"><div class="val">#'+(d.rank||'--')+'</div><div class="lbl">Rank</div></div>'+
+      '<div class="pf-card"><div class="val">'+(c.reputation_score||0)+'</div><div class="lbl">Reputation</div></div>'+
+      '<div class="pf-card"><div class="val">'+(c.total_credits||0)+'</div><div class="lbl">Credits</div></div>'+
+      '<div class="pf-card"><div class="val">'+(c.verifications_received||0)+'</div><div class="lbl">Verifications</div></div>';
+    var cs=d.recent_contributions||[],ct='',types={entity_added:'Added Entity',relation_added:'Added Relation',verified_by_peer:'Verified by Peer',referral:'Referral'};
+    if(cs.length===0)ct='<p class="muted">No contributions yet.</p>';
+    else cs.forEach(function(ci){ct+='<div class="contrib-item"><div><span class="type">'+(types[ci.type]||ci.type)+'</span>'+(ci.entity_name?' &mdash; '+ci.entity_name:'')+'</div><div><span class="credits">+'+ci.credits_earned+'</span></div></div>';});
+    var cl=el('contrib-list');if(cl)cl.innerHTML=ct;
+  }catch(e){var nm=el('pf-name');if(nm)nm.textContent='Load failed - please refresh';}
+})();
+
+async function saveProfile(){
+  var c=document.getElementById('edit-company').value.trim();
+  var r=document.getElementById('edit-role').value.trim();
+  await fetch('/api/profile/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({company:c,role:r})});
+  alert('Profile updated!');location.reload();
+}
+</script>
+
+</body>
+</html>

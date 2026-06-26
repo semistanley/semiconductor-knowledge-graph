@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Knowledge Evolution - KG Platform</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="/static/js/echarts.min.js"></script>
+  <style>
+    .evo-container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .evo-hero { text-align: center; padding: 40px 0; }
+    .evo-hero h1 { font-size: 36px; font-weight: 800; margin: 0; }
+    .evo-hero p { color: var(--muted); font-size: 16px; margin: 12px 0 0; }
+    .evo-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+    .evo-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 6px 24px rgba(20,33,61,0.05); }
+    .evo-card .big { font-size: 48px; font-weight: 800; color: var(--brand); }
+    .evo-card .label { font-size: 14px; color: var(--muted); margin-top: 8px; }
+    .evo-card .delta { font-size: 13px; margin-top: 4px; }
+    .delta.up { color: #18a999; }
+    .chart-box { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin: 24px 0; height: 400px; box-shadow: 0 6px 24px rgba(20,33,61,0.05); }
+    .timeline { margin: 24px 0; }
+    .tl-item { display: flex; gap: 16px; padding: 16px; border-left: 3px solid var(--border); margin-left: 20px; position: relative; }
+    .tl-item:before { content: ""; position: absolute; left: -9px; top: 24px; width: 14px; height: 14px; border-radius: 50%; background: var(--brand); border: 3px solid #fff; box-shadow: 0 2px 8px rgba(74,103,255,0.3); }
+    .tl-week { font-size: 13px; color: var(--muted); min-width: 100px; }
+    .tl-body h4 { margin: 0 0 4px; font-size: 16px; }
+    .tl-body p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .auto-tag { background: rgba(24,169,153,0.12); color: #18a999; }
+    .human-tag { background: rgba(74,103,255,0.12); color: var(--brand); }
+    @media (max-width: 768px) { .evo-metrics { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">Knowledge Evolution Timeline</div>
+            <div class="nav">
+        <a href="/">Home</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/news">News</a>
+        {% if user %}
+        <a href="/app">Chat</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/profile">Profile</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+        {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="evo-container">
+      <div class="evo-hero">
+        <h1>Knowledge Graph Evolution</h1>
+        <p>The graph grows itself — AI auto-ingestion + engineer contributions + community verification</p>
+      </div>
+
+      <div class="evo-metrics" id="metrics">
+        <div class="evo-card"><div class="big" id="m-nodes">--</div><div class="label">Total Nodes</div></div>
+        <div class="evo-card"><div class="big" id="m-rels">--</div><div class="label">Total Relations</div></div>
+        <div class="evo-card"><div class="big" id="m-growth">--</div><div class="label">New This Week</div></div>
+        <div class="evo-card"><div class="big" id="m-weeks">--</div><div class="label">Weeks Tracked</div></div>
+      </div>
+
+      <div class="chart-box" id="growth-chart"></div>
+
+      <h3>Evolution Timeline</h3>
+      <div class="timeline" id="timeline">
+        <p class="muted">Loading evolution data...</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function() {
+  var chartDom = document.getElementById('growth-chart');
+  if (!chartDom) return;
+  var chart = echarts.init(chartDom);
+  var loader = document.getElementById('timeline');
+  if (loader) loader.innerHTML = '<p class="muted">Loading evolution data...</p>';
+
+  fetch('/api/evolution/data')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var snaps = data.snapshots || [];
+      if (snaps.length === 0) {
+        document.getElementById('timeline').innerHTML = '<p class="muted">No snapshots yet. The system will auto-generate them weekly.</p>';
+        return;
+      }
+      var latest = snaps[snaps.length - 1];
+      document.getElementById('m-nodes').textContent = latest.node_count || '--';
+      document.getElementById('m-rels').textContent = latest.relation_count || '--';
+      document.getElementById('m-growth').textContent = '+' + (latest.new_relations_count || 0);
+      document.getElementById('m-weeks').textContent = snaps.length;
+
+      chart.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['Nodes','Relations'], textStyle: { color: '#1b2430' } },
+        xAxis: { type: 'category', data: snaps.map(function(s){return s.week_label}) },
+        yAxis: [
+          { type: 'value', name: 'Nodes' },
+          { type: 'value', name: 'Relations' }
+        ],
+        series: [
+          { name: 'Nodes', type: 'line', smooth: true, data: snaps.map(function(s){return s.node_count}),
+            lineStyle: { width: 3, color: '#4a67ff' }, areaStyle: { color: 'rgba(74,103,255,0.1)' } },
+          { name: 'Relations', type: 'line', smooth: true, yAxisIndex: 1, data: snaps.map(function(s){return s.relation_count}),
+            lineStyle: { width: 3, color: '#18a999' }, areaStyle: { color: 'rgba(24,169,153,0.1)' } }
+        ],
+        grid: { left: 60, right: 60, top: 40, bottom: 40 }
+      });
+
+      var tl = '';
+      snaps.slice().reverse().forEach(function(s) {
+        var top = typeof s.top_growing_nodes === 'string' ? JSON.parse(s.top_growing_nodes||'[]') : (s.top_growing_nodes||[]);
+        var tags = top.slice(0,4).map(function(n){return '<span class="tag auto-tag">'+n.name+'</span>'}).join('');
+        tl += '<div class="tl-item"><div class="tl-week">'+s.week_label+'</div>';
+        tl += '<div class="tl-body"><h4>'+s.node_count+' nodes, '+s.relation_count+' relations</h4>';
+        tl += '<p>+'+ (s.new_relations_count||0) +' new connections</p>';
+        if(tags) tl += '<div class="tag-row">'+tags+'</div>';
+        tl += '</div></div>';
+      });
+      document.getElementById('timeline').innerHTML = tl;
+    })
+    .catch(function(e) {
+      document.getElementById('timeline').innerHTML = '<p class="muted">Failed to load: '+e.message+'</p>';
+    });
+  window.addEventListener('resize', function(){ chart.resize(); });
+})();</script>
+
+</body>
+</html>

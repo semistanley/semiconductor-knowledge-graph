@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>文档三元组抽取与入库</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">文档三元组抽取与入库（人工确认）</div>
+            <div class="nav">
+        <a href="/app">Chat</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/news">News</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+      </div>
+    </div>
+
+    <div class="main single">
+      <div class="left full">
+        <!-- 新的拖拽上传区域 -->
+        <div id="drop-zone" class="drop-zone">
+          <div class="drop-zone-text">
+            <p>将文档（PDF / DOCX / TXT）拖拽到此处</p>
+            <p class="small">或</p>
+            <button id="file-btn" class="btn small-btn">点击选择文件</button>
+          </div>
+          <input id="file" type="file" style="display: none;" />
+        </div>
+
+        <div class="input-row ingest-controls">
+          <input id="version" class="input small" value="v1" placeholder="版本号" />
+          <button id="extract" class="btn">开始抽取三元组</button>
+        </div>
+
+        <div class="panel-title">抽取结果（勾选确认后再入库）</div>
+        <div id="pending" class="pending"></div>
+
+        <div class="input-row">
+          <button id="apply" class="btn danger">确认并导入Neo4j</button>
+        </div>
+
+        <pre id="status" class="trace"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/ingest.js"></script>
+</body>
+</html>

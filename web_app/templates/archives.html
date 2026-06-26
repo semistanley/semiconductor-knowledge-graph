@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>历史归档 - 半导体知识图谱平台</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">历史归档与知识图谱更新记录</div>
+            <div class="nav">
+        <a href="/app">Chat</a>
+        <a href="/evolution">Evolution</a>
+        <a href="/simulate">Simulator</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/signals">Signals</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/news">News</a>
+        <span id="user-info" class="user-info"></span>
+        <button id="logout-btn" class="btn small-btn">Exit</button>
+      </div>
+    </div>
+
+    <div class="main single">
+      <div class="left full">
+        <div class="panel-title">知识图谱自动更新记录</div>
+        <div id="kg-updates" class="archive-list"></div>
+
+        <div class="panel-title" style="margin-top:16px">全部归档</div>
+        <div class="archive-filters">
+          <button class="btn small-btn filter-btn active" data-type="all">全部</button>
+          <button class="btn small-btn filter-btn" data-type="chat">问答</button>
+          <button class="btn small-btn filter-btn" data-type="document_extract">文档抽取</button>
+          <button class="btn small-btn filter-btn" data-type="kg_update">图谱更新</button>
+        </div>
+        <div id="archives" class="archive-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/archives.js"></script>
+</body>
+</html>

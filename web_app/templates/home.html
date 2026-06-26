@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>半导体知识图谱平台 - Semiconductor KG</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/home.css" />
+  <script src="/static/js/echarts.min.js"></script>
+</head>
+<body>
+<div class="home-page">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div id="hero-graph" class="hero-graph-canvas"></div>
+    </div>
+    <div class="hero-content">
+      <h1>半导体知识图谱平台</h1>
+      <p class="hero-sub">
+        基于 Neo4j 知识图谱 + DeepSeek AI，为半导体工艺流程提供<br>
+        智能问答、文档抽取、知识推理与商业决策支持
+      </p>
+      <div class="hero-actions">
+        <a href="/register" class="btn hero-btn-primary">免费注册</a>
+        <a href="/login" class="btn hero-btn-outline">已有账号？登录</a>
+      </div>
+      <div class="hero-stats" id="hero-stats">
+        <div class="stat-item"><span class="stat-num">--</span><span class="stat-label">技术节点</span></div>
+        <div class="stat-item"><span class="stat-num">--</span><span class="stat-label">知识关系</span></div>
+        <div class="stat-item"><span class="stat-num">--</span><span class="stat-label">材料/设备</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <h2>平台核心能力</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F9E0;</div>
+        <h3>AI 智能问答</h3>
+        <p>用自然语言提问半导体工艺问题（如：TiN 沉积推荐什么设备？），系统自动检索知识图谱并生成专业回答。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F4C4;</div>
+        <h3>文档三元组抽取</h3>
+        <p>上传 PDF/DOCX/TXT 技术文档，AI 自动抽取实体、关系和量化参数，人工确认后自动入库更新图谱。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F578;</div>
+        <h3>知识图谱可视化</h3>
+        <p>交互式图谱展示技术、方法、材料、设备之间的关联。点击节点查看商业价值分析、TRL 评估与应用场景。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F4CA;</div>
+        <h3>商业决策支持</h3>
+        <p>每个节点/关系附带商业价值评估、采购决策链分析、ROI 杠杆与落地路径，助力技术投资决策。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x2699;</div>
+        <h3>自动化流水线</h3>
+        <p>文档放入 inbox 目录后自动触发 AI 抽取 → 入库 → 图谱更新，实现知识资产持续积累。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F4E1;</div>
+        <h3>行业日报聚合</h3>
+        <p>接入 Horizon AI 新闻雷达，每天自动抓取全球半导体行业新闻，AI 评分过滤后推送到平台。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Domain Coverage -->
+  <section class="coverage">
+    <h2>覆盖领域</h2>
+    <div class="tag-cloud">
+      <span class="cloud-tag large">PVD</span>
+      <span class="cloud-tag large">CVD</span>
+      <span class="cloud-tag large">ALD</span>
+      <span class="cloud-tag medium">溅射</span>
+      <span class="cloud-tag medium">PECVD</span>
+      <span class="cloud-tag small">MOCVD</span>
+      <span class="cloud-tag medium">LPCVD</span>
+      <span class="cloud-tag large">刻蚀</span>
+      <span class="cloud-tag small">离子注入</span>
+      <span class="cloud-tag medium">化学机械抛光</span>
+      <span class="cloud-tag large">TiN</span>
+      <span class="cloud-tag medium">SiO2</span>
+      <span class="cloud-tag small">HfO2</span>
+      <span class="cloud-tag medium">Al2O3</span>
+      <span class="cloud-tag small">Cu</span>
+      <span class="cloud-tag medium">3D集成</span>
+      <span class="cloud-tag small">异质集成</span>
+      <span class="cloud-tag medium">TSV</span>
+      <span class="cloud-tag large">光刻</span>
+      <span class="cloud-tag small">外延生长</span>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Semiconductor Knowledge Graph Platform &copy; 2026 &nbsp;|&nbsp;
+    Powered by <a href="https://neo4j.com" target="_blank">Neo4j</a> &amp;
+    <a href="https://platform.deepseek.com" target="_blank">DeepSeek</a> &amp;
+    <a href="https://github.com/Thysrael/Horizon" target="_blank">Horizon</a>
+    </p>
+  </footer>
+</div>
+
+<script src="/static/js/home.js"></script>
+</body>
+</html>

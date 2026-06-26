@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>登录 - 半导体知识图谱平台</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1>半导体知识图谱平台</h1>
+      <p class="auth-sub">登录后使用智能问答、文档抽取与知识图谱管理</p>
+      <form id="login-form" class="auth-form">
+        <label>用户名 / 邮箱</label>
+        <input id="username" class="input" type="text" required autocomplete="username" />
+        <label>密码</label>
+        <input id="password" class="input" type="password" required autocomplete="current-password" />
+        <button type="submit" class="btn auth-btn">登录</button>
+        <p id="error" class="auth-error"></p>
+      </form>
+      <p class="auth-footer">还没有账号？<a href="/register">立即注册</a></p>
+    </div>
+  </div>
+  <script src="/static/js/auth.js"></script>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('error');
+      errEl.textContent = '';
+      try {
+        const resp = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+          }),
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          errEl.textContent = data.error || '登录失败';
+          return;
+        }
+        window.location.href = new URLSearchParams(window.location.search).get('next') || '/';
+      } catch (err) {
+        errEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

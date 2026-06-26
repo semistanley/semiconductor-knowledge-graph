@@ -1,0 +1,122 @@
+{
+  "source_doc": "llm_generated",
+  "source_version": "llm_generated",
+  "extracted_at": "2026-01-09T07:00:35.179264Z",
+  "entities": [
+    {
+      "description": "沉积前对晶圆表面进行的操作，目的是去除污染物并优化表面状态。",
+      "evidence": "沉积前对晶圆表面进行清洁和处理",
+      "label": "Action",
+      "name": "清洁和处理",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "一种用于去除有机/无机污染物的标准清洗流程。",
+      "evidence": "采用标准RCA清洗流程去除有机/无机污染物",
+      "label": "Method",
+      "name": "RCA清洗",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "使用氢氟酸漂洗以去除自然氧化层。",
+      "evidence": "通过氢氟酸（HF）漂洗去除自然氧化层",
+      "label": "SubMethod",
+      "name": "氢氟酸（HF）漂洗",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "沉积前使用等离子体处理以增强薄膜附着力。",
+      "evidence": "沉积前使用等离子体表面活化增强薄膜附着力",
+      "label": "Method",
+      "name": "等离子体表面活化",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "用于漂洗去除自然氧化层的化学材料。",
+      "evidence": "通过氢氟酸（HF）漂洗去除自然氧化层",
+      "label": "Material",
+      "name": "氢氟酸（HF）",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "清洁处理的核心能力之一，旨在消除有机残留、金属离子、颗粒等。",
+      "evidence": "彻底去除污染物",
+      "label": "Capability",
+      "name": "去除污染物",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "清洁处理的核心能力之一，旨在活化表面，形成原子级洁净且化学性质稳定的界面。",
+      "evidence": "优化表面状态",
+      "label": "Capability",
+      "name": "优化表面状态",
+      "properties": {},
+      "confirmed": true
+    }
+  ],
+  "relations": [
+    {
+      "description": "清洁和处理的目的之一是去除污染物。",
+      "end_label": "Capability",
+      "end_name": "去除污染物",
+      "evidence": "彻底去除污染物",
+      "properties": {},
+      "rel_type": "HAS_PURPOSE",
+      "start_label": "Action",
+      "start_name": "清洁和处理",
+      "confirmed": true
+    },
+    {
+      "description": "清洁和处理的目的之一是优化表面状态。",
+      "end_label": "Capability",
+      "end_name": "优化表面状态",
+      "evidence": "优化表面状态",
+      "properties": {},
+      "rel_type": "HAS_PURPOSE",
+      "start_label": "Action",
+      "start_name": "清洁和处理",
+      "confirmed": true
+    },
+    {
+      "description": "RCA清洗能够实现去除有机/无机污染物的目的。",
+      "end_label": "Capability",
+      "end_name": "去除污染物",
+      "evidence": "采用标准RCA清洗流程去除有机/无机污染物",
+      "properties": {},
+      "rel_type": "ACHIEVES",
+      "start_label": "Method",
+      "start_name": "RCA清洗",
+      "confirmed": true
+    },
+    {
+      "description": "氢氟酸漂洗能够去除自然氧化层这一特定污染物。",
+      "end_label": "Capability",
+      "end_name": "去除污染物",
+      "evidence": "通过氢氟酸（HF）漂洗去除自然氧化层",
+      "properties": {},
+      "rel_type": "ACHIEVES",
+      "start_label": "SubMethod",
+      "start_name": "氢氟酸（HF）漂洗",
+      "confirmed": true
+    },
+    {
+      "description": "等离子体表面活化能够增强薄膜附着力，属于优化表面状态。",
+      "end_label": "Capability",
+      "end_name": "优化表面状态",
+      "evidence": "沉积前使用等离子体表面活化增强薄膜附着力",
+      "properties": {},
+      "rel_type": "ACHIEVES",
+      "start_label": "Method",
+      "start_name": "等离子体表面活化",
+      "confirmed": true
+    }
+  ],
+  "measurements": [],
+  "warnings": []
+}

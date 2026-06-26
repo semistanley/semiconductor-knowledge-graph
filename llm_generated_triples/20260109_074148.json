@@ -1,0 +1,276 @@
+{
+  "source_doc": "llm_generated",
+  "source_version": "llm_generated",
+  "extracted_at": "2026-01-09T07:41:44.508020Z",
+  "entities": [
+    {
+      "description": "通过交替通入前驱体气体，在衬底表面发生自限性化学反应，逐层生长薄膜的技术。",
+      "evidence": "原子层沉积（ALD）是首选技术",
+      "label": "Technology",
+      "name": "原子层沉积（ALD）",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "传统沉积技术，可能产生厚度不均或孔隙问题。",
+      "evidence": "传统物理气相沉积（PVD）",
+      "label": "Technology",
+      "name": "物理气相沉积（PVD）",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "传统沉积技术，可能产生厚度不均或孔隙问题。",
+      "evidence": "化学气相沉积（CVD）",
+      "label": "Technology",
+      "name": "化学气相沉积（CVD）",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "采用热ALD工艺，以H₂O或O₃作为氧源，HfCl₄或有机铪前驱体作为金属源。",
+      "evidence": "采用热ALD工艺",
+      "label": "Method",
+      "name": "热ALD工艺",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "沉积后需快速退火（RTA）以优化薄膜结晶性和界面质量。",
+      "evidence": "沉积后需快速退火（RTA）",
+      "label": "SubMethod",
+      "name": "快速退火（RTA）",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "通过原位反射高能电子衍射（RHEED）实时监控薄膜生长速率与均匀性。",
+      "evidence": "通过原位反射高能电子衍射（RHEED）实时监控",
+      "label": "SubMethod",
+      "name": "原位反射高能电子衍射（RHEED）",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "热ALD工艺中作为氧源。",
+      "evidence": "以H₂O或O₃作为氧源",
+      "label": "Material",
+      "name": "H₂O",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "热ALD工艺中作为氧源。",
+      "evidence": "以H₂O或O₃作为氧源",
+      "label": "Material",
+      "name": "O₃",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "热ALD工艺中作为金属源。",
+      "evidence": "HfCl₄或有机铪前驱体作为金属源",
+      "label": "Material",
+      "name": "HfCl₄",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "热ALD工艺中作为金属源。",
+      "evidence": "HfCl₄或有机铪前驱体作为金属源",
+      "label": "Material",
+      "name": "有机铪前驱体",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "ALD能在三维鳍片结构上实现亚纳米级厚度控制。",
+      "evidence": "亚纳米级厚度控制",
+      "label": "Capability",
+      "name": "亚纳米级厚度控制",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "ALD能在三维鳍片结构上实现优异的均匀性。",
+      "evidence": "优异的均匀性",
+      "label": "Capability",
+      "name": "优异的均匀性",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "ALD能在三维鳍片结构上实现保形性。",
+      "evidence": "保形性",
+      "label": "Capability",
+      "name": "保形性",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "对于FinFET的复杂三维鳍片结构，ALD能确保高深宽比沟槽内的均匀覆盖。",
+      "evidence": "高深宽比沟槽内的均匀覆盖",
+      "label": "Capability",
+      "name": "高深宽比沟槽内的均匀覆盖",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "7nm FinFET工艺中的三维鳍片结构。",
+      "evidence": "7nm FinFET工艺",
+      "label": "ChipStructure",
+      "name": "FinFET",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "FinFET的复杂三维鳍片结构。",
+      "evidence": "三维鳍片结构",
+      "label": "ChipStructure",
+      "name": "三维鳍片结构",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "7nm FinFET工艺中5nm高k栅介质层的沉积阶段。",
+      "evidence": "5nm高k栅介质层（如HfO₂）的沉积",
+      "label": "ManufacturingStage",
+      "name": "栅介质层沉积",
+      "properties": {},
+      "confirmed": true
+    },
+    {
+      "description": "7nm节点对介电常数（k值）有严苛要求。",
+      "evidence": "介电常数（k值）",
+      "label": "Parameter",
+      "name": "介电常数（k值）",
+      "properties": {},
+      "confirmed": true
+    }
+  ],
+  "relations": [
+    {
+      "description": "栅介质层沉积首选使用原子层沉积（ALD）技术。",
+      "end_label": "Technology",
+      "end_name": "原子层沉积（ALD）",
+      "evidence": "原子层沉积（ALD）是首选技术",
+      "properties": {},
+      "rel_type": "USE_TECHNOLOGY",
+      "start_label": "ManufacturingStage",
+      "start_name": "栅介质层沉积",
+      "confirmed": true
+    },
+    {
+      "description": "原子层沉积（ALD）具有亚纳米级厚度控制的能力。",
+      "end_label": "Capability",
+      "end_name": "亚纳米级厚度控制",
+      "evidence": "亚纳米级厚度控制",
+      "properties": {},
+      "rel_type": "HAS_CAPABILITY",
+      "start_label": "Technology",
+      "start_name": "原子层沉积（ALD）",
+      "confirmed": true
+    },
+    {
+      "description": "原子层沉积（ALD）具有优异的均匀性。",
+      "end_label": "Capability",
+      "end_name": "优异的均匀性",
+      "evidence": "优异的均匀性",
+      "properties": {},
+      "rel_type": "HAS_CAPABILITY",
+      "start_label": "Technology",
+      "start_name": "原子层沉积（ALD）",
+      "confirmed": true
+    },
+    {
+      "description": "原子层沉积（ALD）具有保形性。",
+      "end_label": "Capability",
+      "end_name": "保形性",
+      "evidence": "保形性",
+      "properties": {},
+      "rel_type": "HAS_CAPABILITY",
+      "start_label": "Technology",
+      "start_name": "原子层沉积（ALD）",
+      "confirmed": true
+    },
+    {
+      "description": "原子层沉积（ALD）能确保高深宽比沟槽内的均匀覆盖。",
+      "end_label": "Capability",
+      "end_name": "高深宽比沟槽内的均匀覆盖",
+      "evidence": "高深宽比沟槽内的均匀覆盖",
+      "properties": {},
+      "rel_type": "HAS_CAPABILITY",
+      "start_label": "Technology",
+      "start_name": "原子层沉积（ALD）",
+      "confirmed": true
+    },
+    {
+      "description": "热ALD工艺使用H₂O作为氧源。",
+      "end_label": "Material",
+      "end_name": "H₂O",
+      "evidence": "以H₂O或O₃作为氧源",
+      "properties": {},
+      "rel_type": "USE_MATERIAL",
+      "start_label": "Method",
+      "start_name": "热ALD工艺",
+      "confirmed": true
+    },
+    {
+      "description": "热ALD工艺使用O₃作为氧源。",
+      "end_label": "Material",
+      "end_name": "O₃",
+      "evidence": "以H₂O或O₃作为氧源",
+      "properties": {},
+      "rel_type": "USE_MATERIAL",
+      "start_label": "Method",
+      "start_name": "热ALD工艺",
+      "confirmed": true
+    },
+    {
+      "description": "热ALD工艺使用HfCl₄作为金属源。",
+      "end_label": "Material",
+      "end_name": "HfCl₄",
+      "evidence": "HfCl₄或有机铪前驱体作为金属源",
+      "properties": {},
+      "rel_type": "USE_MATERIAL",
+      "start_label": "Method",
+      "start_name": "热ALD工艺",
+      "confirmed": true
+    },
+    {
+      "description": "热ALD工艺使用有机铪前驱体作为金属源。",
+      "end_label": "Material",
+      "end_name": "有机铪前驱体",
+      "evidence": "HfCl₄或有机铪前驱体作为金属源",
+      "properties": {},
+      "rel_type": "USE_MATERIAL",
+      "start_label": "Method",
+      "start_name": "热ALD工艺",
+      "confirmed": true
+    },
+    {
+      "description": "栅介质层沉积后需要进行快速退火（RTA）。",
+      "end_label": "SubMethod",
+      "end_name": "快速退火（RTA）",
+      "evidence": "沉积后需快速退火（RTA）",
+      "properties": {},
+      "rel_type": "FOLLOWED_BY",
+      "start_label": "ManufacturingStage",
+      "start_name": "栅介质层沉积",
+      "confirmed": true
+    },
+    {
+      "description": "栅介质层沉积过程通过原位反射高能电子衍射（RHEED）实时监控。",
+      "end_label": "SubMethod",
+      "end_name": "原位反射高能电子衍射（RHEED）",
+      "evidence": "通过原位反射高能电子衍射（RHEED）实时监控",
+      "properties": {},
+      "rel_type": "MONITORED_BY",
+      "start_label": "ManufacturingStage",
+      "start_name": "栅介质层沉积",
+      "confirmed": true
+    }
+  ],
+  "measurements": [],
+  "warnings": []
+}
